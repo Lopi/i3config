@@ -35,7 +35,7 @@ bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+j focus left
@@ -168,9 +168,14 @@ bar {
 	background         #000000
 
         # workspace:       border: bg:     text:
-        focused_workspace  #543857 #543857 #FFFFFF
+        focused_workspace  #285577 #285577 #FFFFFF
         active_workspace   #5F676A #5F676A #FFFFFF
         inactive_workspace #000000 #000000 #888888
         urgent_workspace   #87292E #87292E #FFFFFF
         }
 }
+
+# hide window titles
+for_window [class="^.*"] border pixel 1
+# set background
+exec feh --bg-scale ~/.i3/background

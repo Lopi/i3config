@@ -6,7 +6,6 @@ SINK=0
 STEP=1
 MAXVOL=100
 MUTED=0
-#VOLPERC=`pactl list sinks | awk '/Volume: 0:/ {print substr($3, 1, index($3, "%") - 1)}' | head -n1`
 VOLPERC=`amixer get Master | grep "Mono:" | awk '{print $4}' | tr -d '[]%'`
 SKIPOVERCHECK=1
 

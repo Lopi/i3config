@@ -45,7 +45,7 @@ class Item:
 items={}
 items["cpu"]=Item(
             {
-                1:["xfce4-terminal", "-H", "--command", "htop", "-T", "Process Monitor", "--geometry=100x30+1115+45"]
+                1:["xfce4-terminal", "-H", "--command", "htop", "-T", "Process Monitor", "--geometry=100x30+1115+25"]
             }
         )
 items["volume"]=Item(
@@ -65,18 +65,18 @@ items["updates"]=Item(
         )
 items["netdown"]=Item(
             {
-                1:["xfce4-terminal", "-H", "--command", "iftop -P -b -l -B", "-T", "Network Monitor", "--geometry=100x30+1115+45"]
+                1:["xfce4-terminal", "-H", "--command", "iftop -P -b -l -B", "-T", "Network Monitor", "--geometry=100x30+1115+25"]
             }
         )
 items["netup"]=Item(
             {
-                1:["xfce4-terminal", "-H", "--command", "iftop -P -b -l -B", "-T", "Network Monitor", "--geometry=100x30+1115+45"]
+                1:["xfce4-terminal", "-H", "--command", "iftop -P -b -l -B", "-T", "Network Monitor", "--geometry=100x30+1115+25"]
             }
         )
 
 items["uptime"]=Item(
             {
-                1:["xfce4-terminal", "-H", "--command", "archey", "-T", "System Information", "--geometry=80x20+1272+45"]
+                1:["xfce4-terminal", "-H", "--command", "archey", "-T", "System Information", "--geometry=80x20+1272+25"]
             }
         )
 
@@ -84,10 +84,21 @@ items["uptime"]=Item(
 for i in sys.stdin:
     if i=="[\n":
         continue
-    clickevent=json.loads(i.strip(','))
-    name=clickevent["name"]
-    button=clickevent["button"]
+    try:
+        clickevent=json.loads(i.strip(',\\'))
+        name=clickevent["name"]
+        button=clickevent["button"]
 
-    if name in items:
-        item=items[name]
-        item.toggle(button)
+        if name in items:
+            item=items[name]
+            if name != None:
+                item.toggle(button)
+        
+    except TypeError as e:      
+        print(e)
+        pass
+    else:
+        print('good')
+        pass
+
+    

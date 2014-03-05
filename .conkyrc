@@ -1,0 +1,95 @@
+out_to_x no
+out_to_console yes
+short_units yes
+update_interval 2
+text_buffer_size 1024
+
+TEXT
+
+[\
+# Uptime:
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"uptime"},\
+{"full_text":"${uptime_short}","color":"\#EEEEEE","separator":false,"separator_block_width":"6", "name":"uptime"},\
+# Download (change 'enp4s0' to suit your needs):
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${if_match ${downspeedf enp4s0}<100}${downspeed enp4s0}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf enp4s0}<300}${downspeed enp4s0}","color":"\#68B1E8","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf enp4s0}<700}${downspeed enp4s0}","color":"\#DB70B8","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf enp4s0}<1000}${downspeed enp4s0}","color":"\#9470DB","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf enp4s0}>999}${downspeed enp4s0}","color":"\#FF3333","separator":false,"separator_block_width":"6", "name":"netdown"},\
+{"full_text":"${endif}${endif}${endif}${endif}${endif}"},\
+
+# Upload (change 'enp4s0' to suit your needs):
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"netup"},\
+{"full_text":"${if_match ${upspeedf enp4s0}<15}${upspeed enp4s0}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"netup"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${upspeedf enp4s0}<35}${upspeed enp4s0}","color":"\#9470DB","separator":false,"separator_block_width":"6", "name":"netup"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${upspeedf enp4s0}>=35}${upspeed enp4s0}","color":"\#FF3333","separator":false,"separator_block_width":"6", "name":"netup"},\
+{"full_text":"${endif}${endif}${endif}"},\
+
+# Memory:
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"memory"},\
+{"full_text":"${if_match ${memperc}<30}${memeasyfree}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"memory"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${memperc}<60}${memeasyfree}","color":"\#F0DC64","separator":false,"separator_block_width":"6", "name":"memory"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${memperc}<85}${memeasyfree}","color":"\#FF9933","separator":false,"separator_block_width":"6", "name":"memory"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${memperc}>=85}${memeasyfree}","color":"\#FF3333","separator":false,"separator_block_width":"6", "name":"memory"},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+
+# CPU:
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"cpu"},\
+{"full_text":"${if_match ${cpu cpu0}<25}${cpu cpu0}%","color":"\#AAF096","separator":false,"separator_block_width":"0", "name":"cpu"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu0}<50}${cpu cpu0}%","color":"\#F0DC64","separator":false,"separator_block_width":"0", "name":"cpu"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu0}<75}${cpu cpu0}%","color":"\#FF9933","separator":false,"separator_block_width":"0", "name":"cpu"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu0}<=100}${cpu cpu0}%","color":"\#FF3333","separator":false,"separator_block_width":"0", "name":"cpu"},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+
+# Email
+#{"full_text":"Email","color":"\#888888","separator":false,"separator_block_width":"6", "name":"email"},\
+#{"full_text":"${execi 3600 echo $(sh /home/lopi/.scripts/email.sh)}", "separator":false,"separator_block_width":"6", "name":"email"},\
+
+
+# Updates
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"updates"},\
+{"full_text":"${execi 3600 echo $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}", "separator":false,"separator_block_width":"6", "name":"updates","color":"\#AAF096"},\
+
+# Future Updates
+#{"full_text":"${if_match "${execi 3600 $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}"<10}${execi 3600 echo $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}", "separator":false,"separator_block_width":"6", "name":"updates","color":"\#AAF096"},\
+#{"full_text":"${else}"},\
+#{"full_text":"${if_match "${execi 3600 $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}"<20}${execi 3600 echo $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}", "separator":false,"separator_block_width":"6", "name":"updates","color":"\#F0DC64"},\
+#{"full_text":"${else}"},\
+#{"full_text":"${if_match "${execi 3600 $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}"<30}${execi 3600 echo $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}", "separator":false,"separator_block_width":"6", "name":"updates","color":"\#FF9933"},\
+#{"full_text":"${else}"},\
+#{"full_text":"${if_match "${execi 3600 $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}">29}${execi 3600 echo $(pacman -Sup --print-format="%n %v" | grep -v "^::"|wc -l) + $(cower -bu | wc -l) | bc}", "separator":false,"separator_block_width":"6", "name":"updates","color":"\#FF3333"},\
+#{"full_text":"${endif}${endif}${endif}${endif}"},\
+
+
+# Volume (alsa) (requires amixer):
+#{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"volume"},\
+#{"full_text":"${execi 2 amixer get Master | grep 'Mono:' | awk '{print $4}' | tr -d '[]'}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"volume"},\
+
+# Volume 2.0
+{"full_text":"${if_match "${execi 2 /home/lopi/.scripts/volume_on.sh}" == "1"}", "name":"volume", "color":"\#888888", "separator":false},\
+{"full_text":"${execi 2 amixer get Master | grep 'Mono:' | awk '{print $4}' | tr -d '[]'}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"volume"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match "${execi 2 /home/lopi/.scripts/volume_on.sh}" == "0"}", "name":"volume", "color":"\#888888", "separator":false},\
+{"full_text":"${execi 2 amixer get Master | grep 'Mono:' | awk '{print $4}' | tr -d '[]'}","color":"\#AAF096","separator":false,"separator_block_width":"6", "name":"volume"},\
+{"full_text":"${endif}${endif}", "name":"volume"},\
+
+# Date:
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name":"date"},\
+{"full_text":"${time %D}","color":"\#EEEEEE","separator":false,"separator_block_width":"6", "name":"date"},\
+# Time:
+{"full_text":"","color":"\#888888","separator":false,"separator_block_width":"6", "name": "clock"},\
+{"full_text":"${time %r}","color":"\#EEEEEE","separator":false, "name": "clock"}
+],
